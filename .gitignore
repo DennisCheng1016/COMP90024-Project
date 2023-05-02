@@ -1,0 +1,6 @@
+# IDE
+.idea
+
+# Front-end
+front-end/node_modules
+front-end/.env

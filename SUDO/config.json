@@ -1,0 +1,24 @@
+{
+    "db_user": "admin",
+    "db_pw": "123456",
+    "ip": "172.26.133.84",
+    "port": 5984,
+    "content": [
+        {
+            "csv_path": "/Users/yu/Desktop/UNIMELB/SEM1 2023/CCC/A3/SUDO_Data/City_of_Melbourne_CLUE_Bar__Tavern_and_Pub_Patrons_Capacity__Point__2017/com_clue_bars_pubs_patron_capacity_2017-345109175983486963.csv",
+            "db_name": "sudo_pubs" 
+        },
+        {
+            "csv_path": "/Users/yu/Desktop/UNIMELB/SEM1 2023/CCC/A3/SUDO_Data/City_of_Melbourne_CLUE_Cafes__Restaurants_and_Bistros_Seats__Points__2017/com_clue_cafe_restaurant_bistro_seats_2017-4330365050145799942.csv",
+            "db_name": "sudo_res_cafe" 
+        },
+        {
+            "csv_path": "/Users/yu/Desktop/UNIMELB/SEM1 2023/CCC/A3/SUDO_Data/VCGLR_-_Gambling_Venues__Point__February_2019/vcglr_gambling_venues_20190308-5893960050069217108.csv",
+            "db_name": "sudo_gambling" 
+        },
+        {
+            "csv_path": "/Users/yu/Desktop/UNIMELB/SEM1 2023/CCC/A3/SUDO_Data/VCGLR_-_Liquor_Venues__Point__February_2019/vcglr_liquor_venues_20190308-727586809485612776.csv",
+            "db_name": "sudo_alcohol" 
+        }
+    ]
+}

@@ -18,7 +18,7 @@
         },
         {
             "csv_path": "/Users/yu/Desktop/UNIMELB/SEM1 2023/CCC/A3/SUDO_Data/VCGLR_-_Liquor_Venues__Point__February_2019/vcglr_liquor_venues_20190308-727586809485612776.csv",
-            "db_name": "sudo_alcohol" 
+            "db_name": "sudo_alcohol_correct" 
         }
     ]
 }

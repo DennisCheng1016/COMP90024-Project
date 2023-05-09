@@ -36,6 +36,7 @@ if __name__ == '__main__':
         df_csv = None
         with open(csv_path, 'r') as f:
             df_csv = pd.read_csv(f)
+            df_csv.fillna("N/A", inplace=True)
 
         if db_name in server_dict:
             print(f"Database {db_name} loaded alr!")

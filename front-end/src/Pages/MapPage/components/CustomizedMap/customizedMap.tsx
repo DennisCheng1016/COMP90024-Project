@@ -1,7 +1,10 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import { MapContainer, MapStyles } from './customizedMapStyle';
-import {useMount} from "ahooks";
+// @ts-ignore
+import geoVIC from '../../../../assets/geoVIC.geojson'
+// @ts-ignore
+import geoMel from '../../../../assets/geoMel.geojson'
 
 
 const CustomizedMap = () => {
@@ -12,10 +15,12 @@ const CustomizedMap = () => {
 
 
   const drawZones = (map: google.maps.Map) => {
-    map.data.loadGeoJson("https://data.gov.au/geoserver/vic-local-government-areas-psma-administrative-boundaries/wfs?request=GetFeature&typeName=ckan_bdf92691_c6fe_42b9_a0e2_a4cd716fa811&outputFormat=json")
+    map.data.loadGeoJson(geoVIC)
+    // map.data.loadGeoJson(geoMel)
     map.data.setStyle({
       strokeWeight: 1,
-      strokeColor: 'black',
+      strokeColor: 'red',
+      // '#0c4ef8'
       strokeOpacity: 1,
       fillColor: "#146474",
     });
@@ -25,6 +30,10 @@ const CustomizedMap = () => {
     map.data.addListener('mouseout', (event: any) => {
       map.data.revertStyle()
     })
+
+    // @ts-ignore
+    map.data.setStyle(feature => {
+      console.log(feature.getProperty('vic_lga__3'))})
   }
 
   if (!isLoaded) return <div>Loading...</div>;

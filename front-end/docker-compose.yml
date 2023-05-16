@@ -1,0 +1,10 @@
+version: "3"
+services:
+  front-end:
+    stdin_open: true
+    tty: true
+    build: .
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/front-end/src

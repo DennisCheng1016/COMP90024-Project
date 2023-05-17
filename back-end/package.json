@@ -1,0 +1,37 @@
+{
+  "name": "cloud-project-server",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main.ts",
+  "scripts": {
+    "start": "ts-node-dev --respawn --transpile-only src/main.ts",
+    "build": "tsc",
+    "serve": "node dist/main.js",
+    "lint": "eslint 'src/**/*.ts'",
+    "lint:fix": "eslint --fix 'src/**/*.ts'"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/zhuocun/cloud-project-server.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/zhuocun/cloud-project-server/issues"
+  },
+  "homepage": "https://github.com/zhuocun/cloud-project-server#readme",
+  "devDependencies": {
+    "@commitlint/cli": "^17.6.1",
+    "@commitlint/config-conventional": "^17.6.1",
+    "@typescript-eslint/eslint-plugin": "^5.59.1",
+    "@typescript-eslint/parser": "^5.59.1",
+    "eslint": "^8.39.0",
+    "husky": "^8.0.3"
+  },
+  "dependencies": {
+    "dotenv": "^16.0.3",
+    "http-status-codes": "^2.2.0",
+    "nano": "^10.1.2"
+  }
+}

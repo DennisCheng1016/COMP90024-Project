@@ -4,3 +4,7 @@
 # Front-end
 front-end/node_modules
 front-end/.env
+
+# Back-end
+back-end/node_modules
+back-end/.env

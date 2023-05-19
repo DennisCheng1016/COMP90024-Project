@@ -10,7 +10,7 @@
         - curl
         - gnupg
       state: present
-  
+
   - name: Create Docker keyring directory
     file:
       path: /etc/apt/keyrings
@@ -37,21 +37,20 @@
     args:
       executable: /bin/bash
 
-  - name: Install Docker, python
+  - name: Update apt and install Docker, python
     apt:
       update_cache: yes
       name:
         - docker-ce
         - docker-ce-cli
         - containerd.io
-        - docker-buildx-plugin
-        - docker-compose-plugin
+        - python3
+        - python3-pip
       state: present
 
   - name: Install required Python packages
     pip:
       name:
-        - docker
         - couchdb
         - configparser
         - Mastodon.py

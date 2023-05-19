@@ -4,3 +4,5 @@ interface ITweet {
     labels: string[];
     scores: number[];
 }
+
+export default ITweet;

@@ -1,8 +1,6 @@
 interface IItem {
-    x: number;
-    y: number;
-    street: string;
-    tradingName: string;
-    type: string;
-    patronCount: number;
+    loc: string;
+    random: number;
 }
+
+export default IItem;

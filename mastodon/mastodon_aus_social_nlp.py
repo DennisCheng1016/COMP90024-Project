@@ -1,5 +1,6 @@
 import couchdb
 import configparser
+import time
 from nlp import RelevanceGrader
 from bs4 import BeautifulSoup
 
@@ -73,7 +74,8 @@ def main():
     while True:
         docs = get_docs(source, limit=10)
         if len(docs) == 0:
-            break
+            time.sleep(10)
+            continue
         save_docs(target, docs)
         delete_docs(source, docs)
 

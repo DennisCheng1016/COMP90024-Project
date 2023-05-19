@@ -62,7 +62,7 @@
       cmd: docker build -t {{ item.name }} {{ item.path }}
     loop:
       - { name: 'aus-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-stream/' }
-      - { name: 'aus-social-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-stream' }
+      - { name: 'aus-social-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-social-stream' }
 
   - name: Run Docker container aus-stream
     docker_container:

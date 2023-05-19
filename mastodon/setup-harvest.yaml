@@ -2,46 +2,23 @@
 - hosts: all
   become: yes
   tasks:
-  - name: Uninstall older versions of Docker, Docker-Engine, Docker.io, containerd, and runc
-    apt:
-      name:
-        - docker
-        - docker-engine
-        - docker.io
-        - containerd
-        - runc
-      state: absent
-    ignore_errors: yes
-
-  - name: Update APT package index
+  - name: Install Docker, python
     apt:
       update_cache: yes
-
-  - name: Install Docker Engine, containerd, docker-buildx-plugin, and docker-compose-plugin
-    apt:
       name:
         - docker-ce
         - docker-ce-cli
         - containerd.io
         - docker-buildx-plugin
         - docker-compose-plugin
-      state: present
-
-  - name: Install pip
-    apt:
-      name: python3-pip
-      state: present
-
-  - name: Install Python3
-    apt:
-      name: python3
+        - python3-pip
+        - python3
       state: present
 
   - name: Install required Python packages
     pip:
       name:
         - couchdb
-        - json
         - configparser
         - Mastodon.py
       executable: pip3
@@ -53,7 +30,18 @@
       - { name: 'aus-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-stream/Dockerfile' }
       - { name: 'aus-social-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-social-stream/Dockerfile' }
 
-  - name: Verify Docker installation by running hello-world image
-    command:
-      cmd: docker run hello-world
-    ignore_errors: yes
+  - name: Run Docker container aus-stream
+    docker_container:
+      name: aus-stream-container
+      image: aus-stream
+      published_ports:
+        - "8070:81"
+      state: started
+
+  - name: Run Docker container aus-social-stream
+    docker_container:
+        name: aus-social-stream-container
+        image: aus-social-stream
+        published_ports:
+          - "7070:81"
+        state: started

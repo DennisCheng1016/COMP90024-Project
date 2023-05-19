@@ -14,15 +14,15 @@ const getItemsByView = async () => {
 const getTest = async (): Promise<IItem[]> => {
     const testItem: IItem[] = [
         {
-            loc: "CARLTON",
+            loc: "MELBOURNE",
             random: 1
         }, 
         {
-            loc: "PARKVILLE",
+            loc: "YARRA",
             random: 2000
         },
         {
-            loc: "KENSINGTON",
+            loc: "BANYULE",
             random: 3000000
         }
     ]

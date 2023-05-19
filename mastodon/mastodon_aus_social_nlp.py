@@ -72,7 +72,7 @@ def main():
         target = server.create(target_db)
 
     while True:
-        docs = get_docs(source, limit=10)
+        docs = get_docs(source, limit=50)
         if len(docs) == 0:
             time.sleep(10)
             continue

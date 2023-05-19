@@ -1,0 +1,59 @@
+---
+- hosts: all
+  become: yes
+  tasks:
+  - name: Uninstall older versions of Docker, Docker-Engine, Docker.io, containerd, and runc
+    apt:
+      name:
+        - docker
+        - docker-engine
+        - docker.io
+        - containerd
+        - runc
+      state: absent
+    ignore_errors: yes
+
+  - name: Update APT package index
+    apt:
+      update_cache: yes
+
+  - name: Install Docker Engine, containerd, docker-buildx-plugin, and docker-compose-plugin
+    apt:
+      name:
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+      state: present
+
+  - name: Install pip
+    apt:
+      name: python3-pip
+      state: present
+
+  - name: Install Python3
+    apt:
+      name: python3
+      state: present
+
+  - name: Install required Python packages
+    pip:
+      name:
+        - couchdb
+        - json
+        - configparser
+        - Mastodon.py
+      executable: pip3
+
+  - name: Build Docker images
+    command:
+      cmd: docker build -t {{ item.name }} {{ item.path }}
+    loop:
+      - { name: 'aus-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-stream/Dockerfile' }
+      - { name: 'aus-social-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-social-stream/Dockerfile' }
+
+  - name: Verify Docker installation by running hello-world image
+    command:
+      cmd: docker run hello-world
+    ignore_errors: yes

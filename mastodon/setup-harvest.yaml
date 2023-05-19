@@ -18,8 +18,8 @@
       mode: '0755'
 
   - name: Add Docker's official GPG key
-    command:
-      cmd: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+    shell: |
+      curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
     args:
       warn: false # to ignore the curl pipe warning
 

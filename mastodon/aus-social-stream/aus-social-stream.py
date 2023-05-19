@@ -12,7 +12,7 @@ password = config.get('couchDB', 'password')
 port = config.get('couchDB', 'port')
 ip = config.get('couchDB', 'ip')
 host = config.get('couchDB', 'host')
-server = couchdb.Server(f'http://{admin}:{password}@{host}:{port}/')
+server = couchdb.Server(f'http://{admin}:{password}@{ip}:{port}/')
 
 db_name = config.get('mastodon.Aus.Social', 'db_name')
 

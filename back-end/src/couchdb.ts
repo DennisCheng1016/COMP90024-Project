@@ -2,18 +2,20 @@ import Nano from "nano";
 import dotenv from "dotenv";
 dotenv.config();
 
-const dbName = process.env.DATABASE_NAME || "";
+const sudoLiquorDBName = process.env.SUDO_LIQUOR_DATABASE_NAME || "";
+const sudoGamblingDBName = process.env.SUDO_GAMBLING_DATABASE_NAME || "";
 const url = process.env.COUCHDB_KEY || "";
-let couchDBClient: Nano.DocumentScope<unknown>;
+let sudoLiquorClient: Nano.DocumentScope<unknown>;
+let sudoGamblingClient: Nano.DocumentScope<unknown>;
 const connectToCouchDB = async () => {
     const nano = Nano(url);
     try {
-        couchDBClient = nano.db.use(dbName);
-        await couchDBClient.info();
+        sudoLiquorClient = nano.db.use(sudoLiquorDBName);
+        sudoGamblingClient = nano.db.use(sudoGamblingDBName);
+        await sudoLiquorClient.info();
     } catch (err) {
         console.error("Error connecting to CouchDB:", err);
     }
 }
 
-
-export {connectToCouchDB, couchDBClient};
+export {connectToCouchDB, sudoLiquorClient, sudoGamblingClient};

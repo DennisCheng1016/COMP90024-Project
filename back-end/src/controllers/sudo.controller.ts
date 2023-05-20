@@ -15,7 +15,23 @@ const getLocLiquorAnalysis = async (
         console.log(error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
     }
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location analysis not found" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location liquor analysis not found" });
+};
+
+const getLocGamblingAnalysis = async (
+    _: Request,
+    res: Response
+) => {
+    try {
+        const locAnalysis: ILocAnalysis[] = await SudoService.getLocGamblingAnalysis();
+        if (locAnalysis != null) {
+            return res.status(StatusCodes.OK).json(locAnalysis);
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
+    }
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location gambling analysis not found" });
 };
 
 const getLocLiquorData = async (
@@ -31,7 +47,7 @@ const getLocLiquorData = async (
         console.log(error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
     }
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location data not found" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location liquor data not found" });
 };
 
-export const SudoController = { getLocLiquorAnalysis, getLocLiquorData };
+export const SudoController = { getLocLiquorAnalysis, getLocGamblingAnalysis, getLocLiquorData };

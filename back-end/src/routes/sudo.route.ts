@@ -1,10 +1,9 @@
 import express from "express";
-import { ItemController } from "../controllers/sudo.controller";
+import { SudoController } from "../controllers/sudo.controller";
 
 const sudoRouter = express.Router();
 
-//itemRouter.get("/:id", ItemController.getItemById);
-sudoRouter.get("/loc-analysis", ItemController.getLocAnalysis);
-sudoRouter.get("/loc-data/:key", ItemController.getLocData);
+sudoRouter.get("/liquor/loc-analysis", SudoController.getLocLiquorAnalysis);
+sudoRouter.get("/liquor/loc-data/:key", SudoController.getLocLiquorData);
 
 export default sudoRouter;

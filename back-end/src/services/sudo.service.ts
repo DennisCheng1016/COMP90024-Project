@@ -5,18 +5,23 @@ const GAMBLING_DESIGN_DOC = "sudo-gambling-vic";
 const LOC_ANALYSIS_VIEW = "loc-analysis";
 const LOC_DATA_VIEW = "loc-data";
 const getLocLiquorAnalysis = async () => {
-    const items = await sudoLiquorClient.view(LIQUOR_DESIGN_DOC, LOC_ANALYSIS_VIEW, { group: true });
-    return items.rows as ILocAnalysis[];
+    const analysis = await sudoLiquorClient.view(LIQUOR_DESIGN_DOC, LOC_ANALYSIS_VIEW, { group: true });
+    return analysis.rows as ILocAnalysis[];
 }
 
 const getLocGamblingAnalysis = async () => {
-    const items = await sudoGamblingClient.view(GAMBLING_DESIGN_DOC, LOC_ANALYSIS_VIEW, { group: true });
-    return items.rows as ILocAnalysis[];
+    const analysis = await sudoGamblingClient.view(GAMBLING_DESIGN_DOC, LOC_ANALYSIS_VIEW, { group: true });
+    return analysis.rows as ILocAnalysis[];
 }
 
 const getLocLiquorData = async (key: string) => {
-    const items = await sudoLiquorClient.view(LIQUOR_DESIGN_DOC, LOC_DATA_VIEW, { key });
-    return items.rows as ILocData[];
+    const data = await sudoLiquorClient.view(LIQUOR_DESIGN_DOC, LOC_DATA_VIEW, { key });
+    return data.rows as ILocData[];
 }
 
-export const SudoService = { getLocLiquorAnalysis, getLocGamblingAnalysis, getLocLiquorData };
+const getLocGamblingData = async (key: string) => {
+    const data = await sudoGamblingClient.view(GAMBLING_DESIGN_DOC, LOC_DATA_VIEW, { key });
+    return data.rows as ILocData[];
+}
+
+export const SudoService = { getLocLiquorAnalysis, getLocGamblingAnalysis, getLocLiquorData, getLocGamblingData };

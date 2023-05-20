@@ -50,4 +50,21 @@ const getLocLiquorData = async (
     return res.status(StatusCodes.NOT_FOUND).json({ error: "Location liquor data not found" });
 };
 
-export const SudoController = { getLocLiquorAnalysis, getLocGamblingAnalysis, getLocLiquorData };
+const getLocGamblingData = async(
+    req: Request,
+    res: Response
+) => {
+    try {
+        const locData: ILocData[] = await SudoService.getLocGamblingData(req.params.key);
+        if (locData != null) {
+            return res.status(StatusCodes.OK).json(locData);
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
+    }
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location gambling data not found" });
+};
+
+
+export const SudoController = { getLocLiquorAnalysis, getLocGamblingAnalysis, getLocLiquorData, getLocGamblingData };

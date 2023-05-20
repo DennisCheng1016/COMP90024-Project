@@ -136,9 +136,7 @@ def main():
     while True:
         docs = get_docs(source, limit=100)
         if len(docs) == 0:
-            # sleep for 10 minutes
-            time.sleep(600)
-            continue
+            break
         process_geo_and_save_docs(target, no_zone, docs, vic_map_data)
         delete_docs(source, docs)
 

@@ -98,7 +98,7 @@ def find_location(location):
                     return (f"{city} ({state})", city_code)
     return None
 
-with open('/tweet/Users/yu/COMP90024_TEAM47 Dropbox/CCC_A2_Data/mnt/ext100/twitter-huge.json', 'r') as file:
+with open('/home/ubuntu/twitter-huge.json', 'r') as file:
     print("File opened!")
     dicts = []
     messages = []

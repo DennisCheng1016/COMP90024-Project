@@ -1,5 +1,5 @@
 import { Request, Response } from "express";
-import { ItemService } from "../services/item.service";
+import { SudoService } from "../services/sudo.service";
 import { StatusCodes } from "http-status-codes";
 import IItem from "../interfaces/Item";
 
@@ -10,7 +10,7 @@ const getItemById = async (
     try {
         const itemId = req.params.id;
         if (itemId != null) {
-            const item = await ItemService.getItemById(itemId);
+            const item = await SudoService.getItemById(itemId);
             if (item != null) {
                 return res.status(StatusCodes.OK).json(item);
             }
@@ -24,37 +24,36 @@ const getItemById = async (
     return res.status(StatusCodes.NOT_FOUND).json({ error: "Item not found" });
 };
 
-const getItemsByView = async (
-    req: Request,
+const getLocAnalysis = async (
+    _: Request,
     res: Response
-): Promise<Response<any, Record<string, any>>> => {
+) => {
     try {
-        const item = await ItemService.getItemsByView();
-        if (item != null) {
-            return res.status(StatusCodes.OK).json(item);
+        const locAnalysis: ILocAnalysis[] = await SudoService.getLocAnalysis();
+        if (locAnalysis != null) {
+            return res.status(StatusCodes.OK).json(locAnalysis);
         }
     } catch (error) {
         console.log(error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
     }
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "Items not found" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location analysis not found" });
 };
 
-const getTest = async (
+const getLocData = async (
     req: Request,
     res: Response
-): Promise<Response<any, Record<string, any>>> => {
+) => {
     try {
-        const items: IItem[] = await ItemService.getTest();
-        console.log(items);
-        if (items != null) {
-            return res.status(StatusCodes.OK).json(items);
+        const locData: ILocData[] = await SudoService.getLocData(req.params.key);
+        if (locData != null) {
+            return res.status(StatusCodes.OK).json(locData);
         }
     } catch (error) {
         console.log(error);
         return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
     }
-    return res.status(StatusCodes.NOT_FOUND).json({ error: "Items not found" });
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Location data not found" });
 };
 
-export const ItemController = { getItemById, getItemsByView, getTest };
+export const ItemController = { getItemById, getLocAnalysis, getLocData };

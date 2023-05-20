@@ -1,10 +1,8 @@
 import { Router } from "express";
-import itemRouter from "./item.route";
-import testRouter from "./test.route";
+import sudoRouter from "./sudo.route";
 
 const router = Router();
 
-router.use("/items", itemRouter);
-router.use("/test", testRouter);
+router.use("/sudo", sudoRouter);
 
 export default router;

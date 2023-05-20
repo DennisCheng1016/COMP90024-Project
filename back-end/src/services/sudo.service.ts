@@ -6,9 +6,14 @@ const getItemById = async (itemId: string) => {
     return item as unknown as IItem;
 }
 
-const getItemsByView = async () => {
-    const items = couchDBClient.view("nlp", "label_alc_stats");
-    return items as unknown as IItem[];
+const getLocAnalysis = async () => {
+    const items = await couchDBClient.view("location", "loc-analysis", { group: true });
+    return items.rows as ILocAnalysis[];
+}
+
+const getLocData = async (key: string) => {
+    const items = await couchDBClient.view("location", "loc-data", { key });
+    return items.rows as ILocData[];
 }
 
 const getTest = async (): Promise<IItem[]> => {
@@ -29,4 +34,4 @@ const getTest = async (): Promise<IItem[]> => {
     return testItem;
 }
 
-export const ItemService = { getItemById, getItemsByView, getTest };
+export const SudoService = { getItemById, getLocAnalysis, getTest, getLocData };

@@ -2,51 +2,61 @@
 - hosts: 127.0.0.1
   become: yes
   tasks:
-  # - name: Install apt dependencies
-  #   apt:
-  #     update_cache: yes
-  #     name:
-  #       - ca-certificates
-  #       - curl
-  #       - gnupg
-  #     state: present
-  
-  # - name: Create Docker keyring directory
-  #   file:
-  #     path: /etc/apt/keyrings
-  #     state: directory
-  #     mode: '0755'
 
-  # - name: Add Docker's official GPG key
-  #   shell: |
-  #     curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-  #   args:
-  #     warn: false # to ignore the curl pipe warning
+  - name: Remove existing Docker packages
+    apt:
+      name: 
+        - docker
+        - docker-engine
+        - docker.io
+        - containerd
+        - runc
+      state: absent
 
-  # - name: Set Docker keyring permission
-  #   file:
-  #     path: /etc/apt/keyrings/docker.gpg
-  #     mode: '0644'
+  - name: Install prerequisite packages
+    apt:
+      name: 
+        - ca-certificates
+        - curl
+        - gnupg
+      state: present
 
-  # - name: Set up Docker repository
-  #   shell: |
-  #     echo \
-  #     "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-  #     \"$($. /etc/os-release && echo \"$VERSION_CODENAME\")\" stable" | \
-  #     sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-  #   args:
-  #     executable: /bin/bash
+  - name: Create the directory for Docker keyring
+    file:
+      path: /etc/apt/keyrings
+      state: directory
+      mode: '0755'
 
-  # - name: Install Docker, python
-  #   apt:
-  #     update_cache: yes
-  #     name:
-  #       - docker-ce
-  #       - docker-ce-cli
-  #       - containerd.io
-  #       - docker-buildx-plugin
-  #       - docker-compose-plugin
-  #     state: present
+  - name: Download Docker's official GPG key and move it to the keyring directory
+    shell:
+      cmd: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
+
+  - name: Change permission of Docker keyring
+    file:
+      path: /etc/apt/keyrings/docker.gpg
+      mode: '0644'
+
+  - name: Add Docker's APT repository
+    shell:
+      cmd: |
+        echo \
+        "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
+        jammy stable" | \
+        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+  - name: Update apt cache
+    apt:
+      update_cache: yes
+
+  - name: Install Docker
+    apt:
+      name: 
+        - docker-ce
+        - docker-ce-cli
+        - containerd.io
+        - docker-buildx-plugin
+        - docker-compose-plugin
+      state: present
 
   - name: Install required Python packages
     pip:
@@ -74,8 +84,9 @@
 
   - name: Run Docker container aus-social-stream
     docker_container:
-        name: aus-social-stream-container
-        image: aus-social-stream
-        published_ports:
-          - "7070:81"
-        state: started
+      name: aus-social-stream-container
+      image: aus-social-stream
+      published_ports:
+        - "7070:81"
+      state: started
+...

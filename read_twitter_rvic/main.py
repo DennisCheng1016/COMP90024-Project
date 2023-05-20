@@ -107,6 +107,9 @@ with open('/tweet/Users/yu/COMP90024_TEAM47 Dropbox/CCC_A2_Data/mnt/ext100/twitt
         if counter % 500 == 0:
             print("counter: ", counter)
         counter += 1
+        # recover from crash
+        if counter < 50000000:
+            continue
         if line.startswith('{"id":"'):
             try:
                 tweet = json.loads(line[:-2])

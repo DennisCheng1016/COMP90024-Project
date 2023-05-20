@@ -16,12 +16,12 @@ const getLocGamblingAnalysis = async () => {
 
 const getLocLiquorData = async (key: string) => {
     const data = await sudoLiquorClient.view(LIQUOR_DESIGN_DOC, LOC_DATA_VIEW, { key });
-    return data.rows as ILocData[];
+    return data.rows as ISudoLocData[];
 }
 
 const getLocGamblingData = async (key: string) => {
     const data = await sudoGamblingClient.view(GAMBLING_DESIGN_DOC, LOC_DATA_VIEW, { key });
-    return data.rows as ILocData[];
+    return data.rows as ISudoLocData[];
 }
 
 export const SudoService = { getLocLiquorAnalysis, getLocGamblingAnalysis, getLocLiquorData, getLocGamblingData };

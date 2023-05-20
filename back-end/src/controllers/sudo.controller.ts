@@ -39,7 +39,7 @@ const getLocLiquorData = async (
     res: Response
 ) => {
     try {
-        const locData: ILocData[] = await SudoService.getLocLiquorData(req.params.key);
+        const locData: ISudoLocData[] = await SudoService.getLocLiquorData(req.params.key);
         if (locData != null) {
             return res.status(StatusCodes.OK).json(locData);
         }
@@ -55,7 +55,7 @@ const getLocGamblingData = async(
     res: Response
 ) => {
     try {
-        const locData: ILocData[] = await SudoService.getLocGamblingData(req.params.key);
+        const locData: ISudoLocData[] = await SudoService.getLocGamblingData(req.params.key);
         if (locData != null) {
             return res.status(StatusCodes.OK).json(locData);
         }

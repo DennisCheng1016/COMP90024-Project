@@ -139,7 +139,7 @@ def main():
             # sleep for 10 minutes
             time.sleep(600)
             continue
-        process_geo_and_save_docs(target, no_zone_db, docs, vic_map_data)
+        process_geo_and_save_docs(target, no_zone, docs, vic_map_data)
         delete_docs(source, docs)
 
 

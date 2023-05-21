@@ -53,20 +53,23 @@ def process_geo_and_save_docs(target_db, no_zone_db, docs, vic_map_data):
             zone = 'GREATER GEELONG'
         if doc['city'] == 'melbourne':
             zone = 'MELBOURNE'
-        if zone is None:
-            save_db(no_zone_db, doc)
         else:
             new_doc = {
                 'author_id': doc['author_id'],
-                # 'bbox': doc['bbox'],
-                # 'city': doc['city'],
-                # 'city_code': doc['city_code'],
+                'bbox': doc['bbox'],
+                'city': doc['city'],
+                'city_code': doc['city_code'],
                 'context': doc['context'],
                 'label': doc['labels'],
-                # 'place_id': doc['place_id'],
+                'place_id': doc['place_id'],
                 'score': doc['scores'],
                 'zone': zone,
             }
+            if zone is None:
+                save_db(no_zone_db, new_doc)
+                print(
+                    f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
+                continue
             print(f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
             save_db(target_db, new_doc)
 
@@ -134,7 +137,7 @@ def main():
         no_zone = server.create(no_zone_db)
 
     while True:
-        docs = get_docs(source, limit=100)
+        docs = get_docs(source, limit=1)
         if len(docs) == 0:
             break
         process_geo_and_save_docs(target, no_zone, docs, vic_map_data)

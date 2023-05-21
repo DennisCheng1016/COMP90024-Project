@@ -31,9 +31,6 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 def get_data(view_name):
     url = f"{base_url}mastodon_db_aus_social/_design/nlp/_view/{quote_plus(view_name)}?descending=True"
     response = requests.get(url, auth=(admin, password))
-    url2 = f"{base_url}mastodon_db_aus_social/_design/nlp/_view/drink-ratio"
-    response2 = requests.get(url2, auth=(admin, password))
-    print(response2.json())
     if response.status_code == 200:
         docs = response.json().get("rows", [])
         df = pd.DataFrame([doc["value"] for doc in docs])

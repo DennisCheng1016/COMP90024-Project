@@ -1,7 +1,7 @@
-import express from "express";
+import { Router } from "express";
 import { SudoController } from "../controllers/sudo.controller";
 
-const sudoRouter = express.Router();
+const sudoRouter = Router();
 
 sudoRouter.get("/liquor/analysis", SudoController.getLiquorAnalysis);
 sudoRouter.get("/liquor/data/:key", SudoController.getLiquorData);

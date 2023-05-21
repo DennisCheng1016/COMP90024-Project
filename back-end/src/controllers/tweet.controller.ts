@@ -1,7 +1,7 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { TweetService } from "../services/tweet.service";
-import { FOOD_ANALYSIS_VIEW, FOOD_DATA_VIEW, GAMBLING_ANALYSIS_VIEW, GAMBLING_DATA_VIEW, LIQUOR_ANALYSIS_VIEW, LIQUOR_DATA_VIEW } from "../constants/view";
+import { FOOD_ANALYSIS_VIEW, FOOD_DATA_VIEW, FOOD_RATIO_VIEW, GAMBLING_ANALYSIS_VIEW, GAMBLING_DATA_VIEW, LIQUOR_ANALYSIS_VIEW, LIQUOR_DATA_VIEW } from "../constants/view";
 
 const getLiquorAnalysis = async (
     _: Request,
@@ -99,4 +99,20 @@ const getFoodData = async(
     return res.status(StatusCodes.NOT_FOUND).json({ error: "Food data not found" });
 };
 
-export const TweetController = { getLiquorAnalysis, getGamblingAnalysis, getFoodAnalysis, getLiquorData, getGamblingData, getFoodData };
+const getFoodRatio = async(
+    _: Request,
+    res: Response
+) => {
+    try {
+        const ratio: ILocAnalysis[] = await TweetService.getRatio(FOOD_RATIO_VIEW);
+        if (ratio != null) {
+            return res.status(StatusCodes.OK).json(ratio);
+        }
+    } catch (error) {
+        console.log(error);
+        return res.status(StatusCodes.INTERNAL_SERVER_ERROR).json({ error: "Internal server error" });
+    }
+    return res.status(StatusCodes.NOT_FOUND).json({ error: "Liquor ratio not found" });
+};
+
+export const TweetController = { getLiquorAnalysis, getGamblingAnalysis, getFoodAnalysis, getLiquorData, getGamblingData, getFoodData, getFoodRatio };

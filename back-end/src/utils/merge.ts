@@ -8,7 +8,7 @@ const mergeAnalysis = (analysisVic: IGeneralView[], analysisGmel: IGeneralView[]
         }
         return result;
     }, [] as IGeneralView[]);
-    return handleData(analysis);
+    return analysis;
 }
 
 const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[], population: IGeneralView[]): IGeneralView[] => {
@@ -29,12 +29,6 @@ const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[], populatio
         res.push({ key: el.key, value: el.value.ratio * pop });
     });
     return res;
-}
-
-const handleData = (data: IGeneralView[]) => {
-    const value: number = data.find((el) => el.key === "MELBOURNE")?.value || 0;
-    return data
-        .concat([ { key: "YARRA", value }, { key: "PORT PHILLIP", value }, { key: "MARIBYRNONG", value }, { key: "MORELAND", value }, { key: "STONNINGTON", value }, { key: "DAREBIN", value }, { key: "MOONEE VALLEY", value }, { key: "BANYULE", value }, { key: "BOROONDARA", value } ]);
 }
 
 export { mergeAnalysis, mergeRatio };

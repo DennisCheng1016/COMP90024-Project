@@ -9,6 +9,5 @@ tweetRouter.get("/gambling/analysis", TweetController.getGamblingAnalysis);
 tweetRouter.get("/gambling/data/:key", TweetController.getGamblingData);
 tweetRouter.get("/food/analysis", TweetController.getFoodAnalysis);
 tweetRouter.get("/food/data/:key", TweetController.getFoodData);
-tweetRouter.get("/food/ratio", TweetController.getFoodRatio);
 
 export default tweetRouter;

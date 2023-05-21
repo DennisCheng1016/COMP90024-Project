@@ -1,5 +1,5 @@
 const mergeAnalysis = (analysisVic: IGeneralView[], analysisGmel: IGeneralView[]) => {
-    const analysis = [...analysisVic, ...analysisGmel].reduce((result, item) => {
+    const analysis = [ ...analysisVic, ...analysisGmel ].reduce((result, item) => {
         const existingIndex = result.findIndex((el) => el.key === item.key);
         if (existingIndex !== -1) {
             result[existingIndex].value += item.value;
@@ -12,7 +12,7 @@ const mergeAnalysis = (analysisVic: IGeneralView[], analysisGmel: IGeneralView[]
 }
 
 const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[], population: IGeneralView[]): IGeneralView[] => {
-    const ratio: ITweetRatio[] = [...ratioVic, ...ratioGmel].reduce((result, item) => {
+    const ratio: ITweetRatio[] = [ ...ratioVic, ...ratioGmel ].reduce((result, item) => {
         const existingIndex = result.findIndex((el) => el.key === item.key);
         if (existingIndex !== -1) {
             result[existingIndex].value.highScores += item.value.highScores;
@@ -34,7 +34,7 @@ const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[], populatio
 const handleData = (data: IGeneralView[]) => {
     const value: number = data.find((el) => el.key === "MELBOURNE")?.value || 0;
     return data
-        .concat([{ key: "YARRA", value }, { key: "PORT PHILLIP", value }, { key: "MARIBYRNONG", value }, { key: "MORELAND", value }, { key: "STONNINGTON", value }, { key: "DAREBIN", value }, { key: "MOONEE VALLEY", value }, { key: "BANYULE", value }, { key: "BOROONDARA", value }]);
+        .concat([ { key: "YARRA", value }, { key: "PORT PHILLIP", value }, { key: "MARIBYRNONG", value }, { key: "MORELAND", value }, { key: "STONNINGTON", value }, { key: "DAREBIN", value }, { key: "MOONEE VALLEY", value }, { key: "BANYULE", value }, { key: "BOROONDARA", value } ]);
 }
 
 export { mergeAnalysis, mergeRatio };

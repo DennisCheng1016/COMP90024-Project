@@ -8,7 +8,13 @@ const mergeAnalysis = (analysisVic: ILocAnalysis[], analysisGmel: ILocAnalysis[]
         }
         return result;
     }, [] as ILocAnalysis[]);
-    return analysis;
+    return handleData(analysis);
+}
+
+const handleData = (data: ILocAnalysis[]) => {
+    const value: number = data.find((el) => el.key === "MELBOURNE")?.value || 0;
+    return data
+        .concat([{ key: "YARRA", value }, { key: "PORT PHILLIP", value }, { key: "MARIBYRNONG", value }, { key: "MORELAND", value }, { key: "STONNINGTON", value }, { key: "DAREBIN", value }]);
 }
 
 export { mergeAnalysis };

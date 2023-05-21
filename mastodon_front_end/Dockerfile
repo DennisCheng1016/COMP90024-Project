@@ -14,4 +14,4 @@ RUN pip install -r requirements.txt
 EXPOSE 8050
 
 # Run couchDB_test.py when the container launches
-CMD ["python", "mastodon_front_end"]
+CMD ["python", "mastodon_front_end.py"]

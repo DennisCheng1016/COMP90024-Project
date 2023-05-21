@@ -7,17 +7,17 @@ const LOC_ANALYSIS_VIEW = "loc-analysis";
 const LOC_DATA_VIEW = "loc-data";
 const getLiquorAnalysis = async () => {
     const analysis = await sudoLiquorClient.view(LIQUOR_DESIGN_DOC, LOC_ANALYSIS_VIEW, { group: true });
-    return analysis.rows as ILocAnalysis[];
+    return analysis.rows as IGeneralView[];
 }
 
 const getGamblingAnalysis = async () => {
     const analysis = await sudoGamblingClient.view(GAMBLING_DESIGN_DOC, LOC_ANALYSIS_VIEW, { group: true });
-    return analysis.rows as ILocAnalysis[];
+    return analysis.rows as IGeneralView[];
 }
 
 const getFoodAnalysis = async () => {
     const analysis = await sudoFoodClient.view(FOOD_DESIGN_DOC, LOC_ANALYSIS_VIEW);
-    return analysis.rows as ILocAnalysis[];
+    return analysis.rows as IGeneralView[];
 }
 
 const getLiquorData = async (key: string) => {

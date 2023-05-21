@@ -8,7 +8,7 @@ const getLiquorAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await TweetService.getAnalysis(LIQUOR_ANALYSIS_VIEW);
+        const locAnalysis: IGeneralView[] = await TweetService.getAnalysis(LIQUOR_ANALYSIS_VIEW);
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -24,7 +24,7 @@ const getGamblingAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await TweetService.getAnalysis(GAMBLING_ANALYSIS_VIEW);
+        const locAnalysis: IGeneralView[] = await TweetService.getAnalysis(GAMBLING_ANALYSIS_VIEW);
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -40,7 +40,7 @@ const getFoodAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await TweetService.getAnalysis(FOOD_ANALYSIS_VIEW);
+        const locAnalysis: IGeneralView[] = await TweetService.getAnalysis(FOOD_ANALYSIS_VIEW);
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -104,7 +104,7 @@ const getFoodRatio = async(
     res: Response
 ) => {
     try {
-        const ratio: ILocAnalysis[] = await TweetService.getRatio(FOOD_RATIO_VIEW);
+        const ratio: IGeneralView[] = await TweetService.getRatio(FOOD_RATIO_VIEW);
         if (ratio != null) {
             return res.status(StatusCodes.OK).json(ratio);
         }

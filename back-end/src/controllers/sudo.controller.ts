@@ -7,7 +7,7 @@ const getLiquorAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await SudoService.getLiquorAnalysis();
+        const locAnalysis: IGeneralView[] = await SudoService.getLiquorAnalysis();
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -23,7 +23,7 @@ const getGamblingAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await SudoService.getGamblingAnalysis();
+        const locAnalysis: IGeneralView[] = await SudoService.getGamblingAnalysis();
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -39,7 +39,7 @@ const getFoodAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await SudoService.getFoodAnalysis();
+        const locAnalysis: IGeneralView[] = await SudoService.getFoodAnalysis();
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }

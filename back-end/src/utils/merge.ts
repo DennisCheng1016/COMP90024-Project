@@ -1,4 +1,4 @@
-const mergeAnalysis = (analysisVic: ILocAnalysis[], analysisGmel: ILocAnalysis[]) => {
+const mergeAnalysis = (analysisVic: IGeneralView[], analysisGmel: IGeneralView[]) => {
     const analysis = [...analysisVic, ...analysisGmel].reduce((result, item) => {
         const existingIndex = result.findIndex((el) => el.key === item.key);
         if (existingIndex !== -1) {
@@ -7,11 +7,11 @@ const mergeAnalysis = (analysisVic: ILocAnalysis[], analysisGmel: ILocAnalysis[]
             result.push(item);
         }
         return result;
-    }, [] as ILocAnalysis[]);
+    }, [] as IGeneralView[]);
     return handleData(analysis);
 }
 
-const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[]): ILocAnalysis[] => {
+const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[], population: IGeneralView[]): IGeneralView[] => {
     const ratio: ITweetRatio[] = [...ratioVic, ...ratioGmel].reduce((result, item) => {
         const existingIndex = result.findIndex((el) => el.key === item.key);
         if (existingIndex !== -1) {
@@ -23,14 +23,15 @@ const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[]): ILocAnal
         }
         return result;
     }, [] as ITweetRatio[]);
-    const res: ILocAnalysis[] = [];
+    const res: IGeneralView[] = [];
     ratio.map((el) => {
-        res.push({ key: el.key, value: el.value.ratio });
+        const pop: number = population.find((pop) => pop.key === el.key)?.value || 0;
+        res.push({ key: el.key, value: el.value.ratio * pop });
     });
     return res;
 }
 
-const handleData = (data: ILocAnalysis[]) => {
+const handleData = (data: IGeneralView[]) => {
     const value: number = data.find((el) => el.key === "MELBOURNE")?.value || 0;
     return data
         .concat([{ key: "YARRA", value }, { key: "PORT PHILLIP", value }, { key: "MARIBYRNONG", value }, { key: "MORELAND", value }, { key: "STONNINGTON", value }, { key: "DAREBIN", value }, { key: "MOONEE VALLEY", value }, { key: "BANYULE", value }, { key: "BOROONDARA", value }]);

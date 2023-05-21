@@ -1,4 +1,4 @@
-interface ILocAnalysis {
+interface IGeneralView {
     // loc name
     key: string;
     // number

@@ -7,7 +7,7 @@ const getLiquorAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await IntegrationService.getLiquorAnalysis();
+        const locAnalysis: IGeneralView[] = await IntegrationService.getLiquorAnalysis();
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -23,7 +23,7 @@ const getGamblingAnalysis = async(
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await IntegrationService.getGamblingAnalysis();
+        const locAnalysis: IGeneralView[] = await IntegrationService.getGamblingAnalysis();
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }

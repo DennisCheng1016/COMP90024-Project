@@ -9,10 +9,21 @@ const getLiquorAnalysis = async () => {
     return integrateAnalysis(sudoAnalysis, tweetRatioAnalysis);
 }
 
+const getLiquorData = async (loc: string) => {
+    return (await getLiquorAnalysis().then((res) => {
+        return res.find((el) => el.key === loc);
+    })) as IGeneralView;
+}
 const getGamblingAnalysis = async () => {
     const sudoAnalysis: IGeneralView[] = await SudoService.getGamblingAnalysis();
     const tweetRatioAnalysis: IGeneralView[] = await TweetService.getRatio(GAMBLING_RATIO_VIEW);
     return integrateAnalysis(sudoAnalysis, tweetRatioAnalysis);
 }
 
-export const IntegrationService = { getLiquorAnalysis, getGamblingAnalysis };
+const getGamblingData = async (loc: string) => {
+    return (await getGamblingAnalysis().then((res) => {
+        return res.find((el) => el.key === loc);
+    })) as IGeneralView;
+}
+
+export const IntegrationService = { getLiquorAnalysis, getGamblingAnalysis, getLiquorData, getGamblingData };

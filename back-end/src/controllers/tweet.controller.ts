@@ -1,13 +1,13 @@
 import { Request, Response } from "express";
-import { SudoService } from "../services/sudo.service";
 import { StatusCodes } from "http-status-codes";
+import { TweetService } from "../services/tweet.service";
 
 const getLiquorAnalysis = async (
     _: Request,
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await SudoService.getLiquorAnalysis();
+        const locAnalysis: ILocAnalysis[] = await TweetService.getLiquorAnalysis();
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -23,7 +23,7 @@ const getGamblingAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await SudoService.getGamblingAnalysis();
+        const locAnalysis: ILocAnalysis[] = await TweetService.getGamblingAnalysis();
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -39,7 +39,7 @@ const getLiquorData = async (
     res: Response
 ) => {
     try {
-        const locData: ISudoLocData[] = await SudoService.getLiquorData(req.params.key);
+        const locData: ISudoLocData[] = await TweetService.getLiquorData(req.params.key);
         if (locData != null) {
             return res.status(StatusCodes.OK).json(locData);
         }
@@ -55,7 +55,7 @@ const getGamblingData = async(
     res: Response
 ) => {
     try {
-        const locData: ISudoLocData[] = await SudoService.getGamblingData(req.params.key);
+        const locData: ISudoLocData[] = await TweetService.getGamblingData(req.params.key);
         if (locData != null) {
             return res.status(StatusCodes.OK).json(locData);
         }
@@ -67,4 +67,4 @@ const getGamblingData = async(
 };
 
 
-export const SudoController = { getLiquorAnalysis, getGamblingAnalysis, getLiquorData, getGamblingData };
+export const TweetController = { getLiquorAnalysis, getGamblingAnalysis, getLiquorData, getGamblingData };

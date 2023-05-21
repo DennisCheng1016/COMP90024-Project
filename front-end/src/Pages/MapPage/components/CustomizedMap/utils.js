@@ -14,7 +14,7 @@ export const drawColor = (map, requestData) => {
   });
 };
 
-const BASE_URL = 'http://localhost:3000/api/';
+const BASE_URL = 'http://45.113.235.62:3000/api/';
 
 export const getData = async (url) => {
   const response = await fetch(`${BASE_URL}${url}`);

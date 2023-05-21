@@ -1,6 +1,8 @@
 ---
 - hosts: 127.0.0.1
   become: yes
+  vars:
+    mastodon_base_path: "/home/ubuntu/mastodon"
   tasks:
 
   - name: Remove existing Docker packages
@@ -58,34 +60,39 @@
         - docker-compose-plugin
       state: present
 
-  - name: Install required Python packages
+  - name: Ensure Docker service is running
+    systemd:
+      name: docker
+      state: started
+      enabled: yes
+
+  - name: Install Docker Python package
     pip:
-      name:
-        - docker
-        - couchdb
-        - configparser
-        - Mastodon.py
+      name: docker
       executable: pip3
 
   - name: Build Docker images
-    command:
-      cmd: docker build -t {{ item.name }} {{ item.path }}
+    docker_image:
+      name: "{{ item.name }}"
+      build:
+        path: "{{ mastodon_base_path }}/{{ item.path }}"
+      source: build
     loop:
-      - { name: 'aus-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-stream/' }
-      - { name: 'aus-social-stream', path: '/home/ubuntu/COMP90024-Project/mastodon/aus-social-stream/' }
+      - { name: 'aus-nlp-stream', path: 'aus-nlp-stream' }
+      - { name: 'aus-social-nlp-stream', path: 'aus-social-nlp-stream' }
 
   - name: Run Docker container aus-stream
     docker_container:
-      name: aus-stream-container
-      image: aus-stream
+      name: aus-nlp-stream-container
+      image: aus-nlp-stream
       published_ports:
         - "8070:81"
       state: started
 
   - name: Run Docker container aus-social-stream
     docker_container:
-      name: aus-social-stream-container
-      image: aus-social-stream
+      name: aus-social-nlp-stream-container
+      image: aus-social-nlp-stream
       published_ports:
         - "7070:81"
       state: started

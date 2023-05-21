@@ -4,3 +4,6 @@
 # Front-end
 front-end/node_modules
 front-end/.env
+
+# Mac
+.DS_Store

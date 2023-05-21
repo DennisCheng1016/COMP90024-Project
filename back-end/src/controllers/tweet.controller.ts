@@ -1,13 +1,14 @@
 import { Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import { TweetService } from "../services/tweet.service";
+import { FOOD_ANALYSIS_VIEW, FOOD_DATA_VIEW, GAMBLING_ANALYSIS_VIEW, GAMBLING_DATA_VIEW, LIQUOR_ANALYSIS_VIEW, LIQUOR_DATA_VIEW } from "../constants/view";
 
 const getLiquorAnalysis = async (
     _: Request,
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await TweetService.getLiquorAnalysis();
+        const locAnalysis: ILocAnalysis[] = await TweetService.getAnalysis(LIQUOR_ANALYSIS_VIEW);
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -23,7 +24,7 @@ const getGamblingAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await TweetService.getGamblingAnalysis();
+        const locAnalysis: ILocAnalysis[] = await TweetService.getAnalysis(GAMBLING_ANALYSIS_VIEW);
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -39,7 +40,7 @@ const getFoodAnalysis = async (
     res: Response
 ) => {
     try {
-        const locAnalysis: ILocAnalysis[] = await TweetService.getFoodAnalysis();
+        const locAnalysis: ILocAnalysis[] = await TweetService.getAnalysis(FOOD_ANALYSIS_VIEW);
         if (locAnalysis != null) {
             return res.status(StatusCodes.OK).json(locAnalysis);
         }
@@ -55,7 +56,7 @@ const getLiquorData = async (
     res: Response
 ) => {
     try {
-        const locData: ITweetLocData[] = await TweetService.getLiquorData(req.params.key);
+        const locData: ITweetLocData[] = await TweetService.getData(req.params.key, LIQUOR_DATA_VIEW);
         if (locData != null) {
             return res.status(StatusCodes.OK).json(locData);
         }
@@ -71,7 +72,7 @@ const getGamblingData = async(
     res: Response
 ) => {
     try {
-        const locData: ITweetLocData[] = await TweetService.getGamblingData(req.params.key);
+        const locData: ITweetLocData[] = await TweetService.getData(req.params.key, GAMBLING_DATA_VIEW);
         if (locData != null) {
             return res.status(StatusCodes.OK).json(locData);
         }
@@ -87,7 +88,7 @@ const getFoodData = async(
     res: Response
 ) => {
     try {
-        const locData: ITweetLocData[] = await TweetService.getFoodData(req.params.key);
+        const locData: ITweetLocData[] = await TweetService.getData(req.params.key, FOOD_DATA_VIEW);
         if (locData != null) {
             return res.status(StatusCodes.OK).json(locData);
         }

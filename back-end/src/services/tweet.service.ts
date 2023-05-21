@@ -1,41 +1,19 @@
-import { tweetVicClient } from "../couchdb";
+import { tweetGmelClient, tweetVicClient } from "../couchdb";
+import { mergeAnalysis } from "../utils/merge";
 
-const TWEET_DESIGN_DOC = "tweet-vic";
-const LIQUOR_ANALYSIS_VIEW = "liquor-analysis";
-const LIQUOR_DATA_VIEW = "liquor-data";
-const GAMBLING_ANALYSIS_VIEW = "gambling-analysis";
-const GAMBLING_DATA_VIEW = "gambling-data";
-const FOOD_ANALYSIS_VIEW = "food-analysis";
-const FOOD_DATA_VIEW = "food-data";
+const TWEET_VIC_DESIGN_DOC = "tweet-vic";
+const TWEET_GMEL_DESIGN_DOC = "tweet-gmel";
 
-const getLiquorAnalysis = async () => {
-    const analysis = await tweetVicClient.view(TWEET_DESIGN_DOC, LIQUOR_ANALYSIS_VIEW, { group: true });
-    return analysis.rows as ILocAnalysis[];
+const getAnalysis = async (viewName: string) => {
+    const analysisVic = (await tweetVicClient.view(TWEET_VIC_DESIGN_DOC, viewName, { group: true })).rows as ILocAnalysis[];
+    const analysisGmel = (await tweetGmelClient.view(TWEET_GMEL_DESIGN_DOC, viewName, { group: true })).rows as ILocAnalysis[];
+    return mergeAnalysis(analysisVic, analysisGmel);
 }
 
-const getGamblingAnalysis = async () => {
-    const analysis = await tweetVicClient.view(TWEET_DESIGN_DOC, GAMBLING_ANALYSIS_VIEW, { group: true });
-    return analysis.rows as ILocAnalysis[];
+const getData = async (key: string, viewName: string) => {
+    const dataVic = (await tweetVicClient.view(TWEET_VIC_DESIGN_DOC, viewName, { key })).rows as ITweetLocData[];
+    const dataGmel = (await tweetGmelClient.view(TWEET_GMEL_DESIGN_DOC, viewName, { key })).rows as ITweetLocData[];
+    return dataVic.concat(dataGmel);
 }
 
-const getFoodAnalysis = async () => {
-    const analysis = await tweetVicClient.view(TWEET_DESIGN_DOC, FOOD_ANALYSIS_VIEW, { group: true });
-    return analysis.rows as ILocAnalysis[];
-}
-
-const getLiquorData = async (key: string) => {
-    const data = await tweetVicClient.view(TWEET_DESIGN_DOC, LIQUOR_DATA_VIEW, { key });
-    return data.rows as ITweetLocData[];
-}
-
-const getGamblingData = async (key: string) => {
-    const data = await tweetVicClient.view(TWEET_DESIGN_DOC, GAMBLING_DATA_VIEW, { key });
-    return data.rows as ITweetLocData[];
-}
-
-const getFoodData = async (key: string) => {
-    const data = await tweetVicClient.view(TWEET_DESIGN_DOC, FOOD_DATA_VIEW, { key });
-    return data.rows as ITweetLocData[];
-}
-
-export const TweetService = { getLiquorAnalysis, getGamblingAnalysis, getFoodAnalysis, getLiquorData, getGamblingData, getFoodData };
+export const TweetService = { getAnalysis, getData };

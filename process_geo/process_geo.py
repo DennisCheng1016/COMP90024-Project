@@ -53,25 +53,24 @@ def process_geo_and_save_docs(target_db, no_zone_db, docs, vic_map_data):
             zone = 'GREATER GEELONG'
         if doc['city'] == 'melbourne':
             zone = 'MELBOURNE'
-        else:
-            new_doc = {
-                'author_id': doc['author_id'],
-                'bbox': doc['bbox'],
-                'city': doc['city'],
-                'city_code': doc['city_code'],
-                'context': doc['context'],
-                'label': doc['labels'],
-                'place_id': doc['place_id'],
-                'score': doc['scores'],
-                'zone': zone,
-            }
-            if zone is None:
-                save_db(no_zone_db, new_doc)
-                print(
-                    f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
-                continue
-            print(f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
-            save_db(target_db, new_doc)
+        new_doc = {
+            'author_id': doc['author_id'],
+            'bbox': doc['bbox'],
+            'city': doc['city'],
+            'city_code': doc['city_code'],
+            'context': doc['context'],
+            'label': doc['labels'],
+            'place_id': doc['place_id'],
+            'score': doc['scores'],
+            'zone': zone,
+        }
+        if zone is None:
+            save_db(no_zone_db, new_doc)
+            print(
+                f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
+            continue
+        print(f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
+        save_db(target_db, new_doc)
 
 
 def test_zone(lon, lat, vic_map_data):

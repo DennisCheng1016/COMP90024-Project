@@ -1,0 +1,10 @@
+version: "3"
+services:
+  back-end:
+    stdin_open: true
+    tty: false
+    build: .
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./src:/front-end/src

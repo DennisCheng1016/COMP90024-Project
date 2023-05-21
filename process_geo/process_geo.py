@@ -141,8 +141,8 @@ def main():
             break
         process_geo_and_save_docs(target, no_zone, docs, vic_map_data)
         delete_docs(source, docs)
-        if sys.argv[1] == 'melb':
-            time.sleep(0.5)
+        # if sys.argv[1] == 'melb':
+        time.sleep(0.5)
 
 
 if __name__ == "__main__":

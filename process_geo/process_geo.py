@@ -136,7 +136,7 @@ def main():
         no_zone = server.create(no_zone_db)
 
     while True:
-        docs = get_docs(source, limit=1)
+        docs = get_docs(source, 10)
         if len(docs) == 0:
             break
         process_geo_and_save_docs(target, no_zone, docs, vic_map_data)

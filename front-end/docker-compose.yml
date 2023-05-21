@@ -2,9 +2,9 @@ version: "3"
 services:
   front-end:
     stdin_open: true
-    tty: true
+    tty: false
     build: .
     ports:
-      - "80:80"
+      - "8060:8060"
     volumes:
       - ./src:/front-end/src

@@ -1,0 +1,80 @@
+---
+- hosts: 127.0.0.1
+  become: yes
+  vars:
+    masternode: 115.146.93.213
+    newnode: "{{ ansible_host }}"
+    user: "admin"
+    pass: "admin"
+    VERSION: "3.2.1"
+    cookie: "a192aeb9904e6590849337933b000c99"
+  tasks:
+    - name: Install Docker Python SDK
+      pip:
+        name: docker
+        state: present
+
+    - name: Pull CouchDB Docker image
+      docker_image:
+        name: "ibmcom/couchdb3:{{ VERSION }}"
+        source: pull
+
+    - name: Create and run CouchDB Docker container
+      docker_container:
+        name: "couchdb{{ newnode }}"
+        image: "ibmcom/couchdb3:{{ VERSION }}"
+        env:
+          COUCHDB_USER: "{{ user }}"
+          COUCHDB_PASSWORD: "{{ pass }}"
+          COUCHDB_SECRET: "{{ cookie }}"
+          ERL_FLAGS: '-setcookie "{{ cookie }}" -name "couchdb@{{ newnode }}"'
+        ports:
+          - "5984:5984"
+          - "4369:4369"
+          - "9100-9200:9100-9200"
+
+    - name: Wait for CouchDB to start
+      wait_for:
+        host: "{{ newnode }}"
+        port: 5984
+        delay: 10
+
+    - name: Enable cluster on master node
+      uri:
+        url: "http://{{ user }}:{{ pass }}@{{ masternode }}:5984/_cluster_setup"
+        method: POST
+        body_format: json
+        body:
+          action: "enable_cluster"
+          bind_address: "0.0.0.0"
+          username: "{{ user }}"
+          password: "{{ pass }}"
+          port: "5984"
+          remote_node: "{{ newnode }}"
+          node_count: "4"
+          remote_current_user: "{{ user }}"
+          remote_current_password: "{{ pass }}"
+
+    - name: Add new node to cluster
+      uri:
+        url: "http://{{ user }}:{{ pass }}@{{ masternode }}:5984/_cluster_setup"
+        method: POST
+        body_format: json
+        body:
+          action: "add_node"
+          host: "{{ newnode }}"
+          port: "5984"
+          username: "{{ user }}"
+          password: "{{ pass }}"
+
+    - name: Check cluster membership
+      uri:
+        url: "http://{{ user }}:{{ pass }}@{{ item }}:5984/_membership"
+        method: GET
+        return_content: yes
+      loop: "{{ nodes }}"
+      register: membership_result
+
+    - name: Print membership results
+      debug:
+        msg: "{{ membership_result.results }}"

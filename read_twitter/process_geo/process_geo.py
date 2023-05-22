@@ -47,10 +47,10 @@ def save_db(db, doc):
 
 def process_geo_and_save_docs(target_db, no_zone_db, docs, vic_map_data):
     for doc in docs:
-        if not doc["bbox"]:
+        bbox = doc.get("bbox", None)
+        if not bbox:
             print(f"Document {doc['_id']} has no bbox")
             continue
-        bbox = doc["bbox"]
         zone = get_zone_from_bbox(bbox, vic_map_data)
         if doc["city"] == "geelong":
             zone = "GREATER GEELONG"

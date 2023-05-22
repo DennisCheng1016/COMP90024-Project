@@ -14,3 +14,9 @@
       docker_compose:
         project_src: "{{ mastodon_base_path }}"
         state: present
+        services:
+          - aus_nlp_stream
+          - aus_social_nlp_stream
+        scale:
+          aus_nlp_stream: 1
+          aus_social_nlp_stream: 1

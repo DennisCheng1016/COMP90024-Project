@@ -10,28 +10,35 @@ def save_docs(db, docs, grader):
     doc_list = []
     content_list = []
     for doc in docs:
-        if doc['language'] != 'en':
+        if doc["language"] != "en":
             continue
-        soup = BeautifulSoup(doc['content'], 'html.parser')
+        soup = BeautifulSoup(doc["content"], "html.parser")
         content = soup.get_text()
         if not content or content == "" or len(content) < 1:
             continue
         new_doc = {
-            'name': doc['account']['display_name'],
-            'content': content,
-            'time': doc['created_at'],
+            "_id": doc["id"],  # Assign 'id' of doc to '_id' of CouchDB doc
+            "name": doc["account"]["display_name"],
+            "content": content,
+            "time": doc["created_at"],
         }
         doc_list.append(new_doc)
         content_list.append(content)
     result = grader.grade(content_list)
 
     for i in range(len(doc_list)):
-        doc_list[i]['labels'] = result[i]['labels']
-        doc_list[i]['scores'] = result[i]['scores']
-        doc_id, doc_rev = db.save(doc_list[i])
-        print(
-            f"Document saved with ID {doc_id}, revision {doc_rev}")
-        print(doc_list[i])
+        doc_list[i]["labels"] = result[i]["labels"]
+        doc_list[i]["scores"] = result[i]["scores"]
+        doc_id = doc_list[i]["_id"]
+        try:
+            # Try to fetch the document
+            db[doc_id]
+            print(f"Document with ID {doc_id} already exists, skipping.")
+        except couchdb.http.ResourceNotFound:
+            # If document does not exist, save it
+            doc_id, doc_rev = db.save(doc_list[i])
+            print(f"Document saved with ID {doc_id}, revision {doc_rev}")
+            print(doc_list[i])
 
 
 class MastodonListener(StreamListener):
@@ -51,16 +58,16 @@ class MastodonListener(StreamListener):
 def main():
     # read config file
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read("config.ini")
 
     # Connect to the database
-    admin = config.get('couchDB', 'admin')
-    password = config.get('couchDB', 'password')
-    port = config.get('couchDB', 'port')
-    ip = config.get('couchDB', 'ip')
-    host = config.get('couchDB', 'host')
-    server = couchdb.Server(f'http://{admin}:{password}@{ip}:{port}/')
-    db_name = config.get('mastodon.Aus', 'db_name')
+    admin = config.get("couchDB", "admin")
+    password = config.get("couchDB", "password")
+    port = config.get("couchDB", "port")
+    ip = config.get("couchDB", "ip")
+    host = config.get("couchDB", "host")
+    server = couchdb.Server(f"http://{admin}:{password}@{ip}:{port}/")
+    db_name = config.get("mastodon.Aus", "db_name")
     if db_name in server:
         print(f"Database {db_name} found!")
         db = server[db_name]
@@ -69,16 +76,13 @@ def main():
         db = server.create(db_name)
 
     # Connect to mastodon
-    token = config.get('mastodon.Aus', 'token')
-    m = Mastodon(
-        access_token=token,
-        api_base_url='https://mastodon.au'
-    )
+    token = config.get("mastodon.Aus", "token")
+    m = Mastodon(access_token=token, api_base_url="https://mastodon.au")
 
     # Start streaming
     listener = MastodonListener(db)
     m.stream_public(listener)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     main()

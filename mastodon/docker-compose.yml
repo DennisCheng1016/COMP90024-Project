@@ -5,12 +5,9 @@ services:
       context: ./aus-nlp-stream
       dockerfile: Dockerfile
     restart: unless-stopped
-    ports:
-      - "7070:7070"
+
   aus_social_nlp_stream:
     build:
       context: ./aus-social-nlp-stream
       dockerfile: Dockerfile
     restart: unless-stopped
-    ports:
-      - "7080:7080"

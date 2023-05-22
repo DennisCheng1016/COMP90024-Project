@@ -15,10 +15,10 @@ def find_centroid(bbox):
 
 def get_zone_from_point(point, vic_map_data):
     # Loop over each zone in the map data
-    for feature in vic_map_data['features']:
-        polygon = shape(feature['geometry'])
+    for feature in vic_map_data["features"]:
+        polygon = shape(feature["geometry"])
         if polygon.contains(point):
-            return feature['properties']['vic_lga__3']
+            return feature["properties"]["vic_lga__3"]
     return None
 
 
@@ -30,7 +30,7 @@ def get_zone_from_bbox(bbox, vic_map_data):
 
 
 def get_docs(db, limit=100):
-    result = db.view('_all_docs', limit=limit)
+    result = db.view("_all_docs", limit=limit)
     return [db[row.id] for row in result]
 
 
@@ -47,27 +47,29 @@ def save_db(db, doc):
 
 def process_geo_and_save_docs(target_db, no_zone_db, docs, vic_map_data):
     for doc in docs:
-        bbox = doc['bbox']
+        if not bbox["bbox"]:
+            print(f"Document {doc['_id']} has no bbox")
+            continue
+        bbox = doc["bbox"]
         zone = get_zone_from_bbox(bbox, vic_map_data)
-        if doc['city'] == 'geelong':
-            zone = 'GREATER GEELONG'
-        if doc['city'] == 'melbourne':
-            zone = 'MELBOURNE'
+        if doc["city"] == "geelong":
+            zone = "GREATER GEELONG"
+        if doc["city"] == "melbourne":
+            zone = "MELBOURNE"
         new_doc = {
-            'author_id': doc['author_id'],
-            'bbox': doc['bbox'],
-            'city': doc['city'],
-            'city_code': doc['city_code'],
-            'context': doc['context'],
-            'label': doc['labels'],
-            'place_id': doc['place_id'],
-            'score': doc['scores'],
-            'zone': zone,
+            "author_id": doc["author_id"],
+            "bbox": doc["bbox"],
+            "city": doc["city"],
+            "city_code": doc["city_code"],
+            "context": doc["context"],
+            "label": doc["labels"],
+            "place_id": doc["place_id"],
+            "score": doc["scores"],
+            "zone": zone,
         }
         if zone is None:
             save_db(no_zone_db, new_doc)
-            print(
-                f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
+            print(f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
             continue
         print(f'Zone: {zone}, City: {doc["city"]}, bbox: {doc["bbox"]}')
         save_db(target_db, new_doc)
@@ -80,7 +82,7 @@ def test_zone(lon, lat, vic_map_data):
 
 def main():
     # read map file
-    with open('vic_geo.json', 'r') as f:
+    with open("vic_geo.json", "r") as f:
         vic_map_data = json.load(f)
 
     # Test zone function
@@ -88,21 +90,21 @@ def main():
 
     # Connect to the database
     config = configparser.ConfigParser()
-    config.read('config.ini')
+    config.read("config.ini")
 
-    admin = config.get('couchDB', 'admin')
-    password = config.get('couchDB', 'password')
-    port = config.get('couchDB', 'port')
-    ip = config.get('couchDB', 'ip')
-    host = config.get('couchDB', 'host')
-    server = couchdb.Server(f'http://{admin}:{password}@{ip}:{port}/')
+    admin = config.get("couchDB", "admin")
+    password = config.get("couchDB", "password")
+    port = config.get("couchDB", "port")
+    ip = config.get("couchDB", "ip")
+    host = config.get("couchDB", "host")
+    server = couchdb.Server(f"http://{admin}:{password}@{ip}:{port}/")
 
-    if sys.argv[1] == 'melb':
-        source_db = config.get('tweet.2gmel', 'db_name')
-    elif sys.argv[1] == 'vic':
-        source_db = config.get('tweet.2rvic', 'db_name')
+    if sys.argv[1] == "melb":
+        source_db = config.get("tweet.2gmel", "db_name")
+    elif sys.argv[1] == "vic":
+        source_db = config.get("tweet.2rvic", "db_name")
     else:
-        print('Wrong argument, please use melb or vic')
+        print("Wrong argument, please use melb or vic")
         exit()
 
     if source_db in server:
@@ -112,12 +114,12 @@ def main():
         print(f"Database {source_db} not found!")
         source = server.create(source_db)
 
-    if sys.argv[1] == 'melb':
+    if sys.argv[1] == "melb":
         target_db = "tweet_2gmel_zone"
-    elif sys.argv[1] == 'vic':
+    elif sys.argv[1] == "vic":
         target_db = "tweet_2rvic_zone"
     else:
-        print('Wrong argument, please use melb or vic')
+        print("Wrong argument, please use melb or vic")
         exit()
 
     if target_db in server:
@@ -141,7 +143,6 @@ def main():
             break
         process_geo_and_save_docs(target, no_zone, docs, vic_map_data)
         delete_docs(source, docs)
-        # if sys.argv[1] == 'melb':
         time.sleep(0.5)
 
 

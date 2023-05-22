@@ -203,86 +203,8 @@ sudo apt-get install python3 python3-pip ansible -y
 # Configure ansible
 echo 'localhost' | sudo tee /etc/ansible/hosts
 
-# Setup setup-docker.yaml
-cat << 'EOF' > setup-docker.yaml
----
-- hosts: 127.0.0.1
-  become: yes
-  vars:
-    mastodon_base_path: "/home/ubuntu/mastodon"
-  tasks:
-
-  - name: Remove existing Docker packages
-    apt:
-      name: 
-        - docker
-        - docker-engine
-        - docker.io
-        - containerd
-        - runc
-      state: absent
-
-  - name: Install prerequisite packages
-    apt:
-      name: 
-        - ca-certificates
-        - curl
-        - gnupg
-      state: present
-
-  - name: Create the directory for Docker keyring
-    file:
-      path: /etc/apt/keyrings
-      state: directory
-      mode: '0755'
-
-  - name: Download Docker's official GPG key and move it to the keyring directory
-    shell:
-      cmd: curl -fsSL https://download.docker.com/linux/ubuntu/gpg | gpg --dearmor -o /etc/apt/keyrings/docker.gpg
-
-  - name: Change permission of Docker keyring
-    file:
-      path: /etc/apt/keyrings/docker.gpg
-      mode: '0644'
-
-  - name: Add Docker's APT repository
-    shell:
-      cmd: |
-        echo \
-        "deb [arch=\"$(dpkg --print-architecture)\" signed-by=/etc/apt/keyrings/docker.gpg] https://download.docker.com/linux/ubuntu \
-        jammy stable" | \
-        sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
-
-  - name: Update apt cache
-    apt:
-      update_cache: yes
-
-  - name: Install Docker
-    apt:
-      name: 
-        - docker-ce
-        - docker-ce-cli
-        - containerd.io
-        - docker-buildx-plugin
-        - docker-compose-plugin
-      state: present
-
-  - name: Install docker-compose
-    apt:
-      name: docker-compose
-      state: present
-
-  - name: Install Docker Python package
-    pip:
-      name: docker
-      executable: pip3
-
-  - name: Ensure Docker service is running
-    systemd:
-      name: docker
-      state: started
-      enabled: yes
-EOF
-
 # Run the Ansible Playbook
 sudo ansible-playbook -c local setup-docker.yaml
+
+# enter zsh
+zsh 

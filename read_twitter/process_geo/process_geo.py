@@ -47,7 +47,7 @@ def save_db(db, doc):
 
 def process_geo_and_save_docs(target_db, no_zone_db, docs, vic_map_data):
     for doc in docs:
-        if not bbox["bbox"]:
+        if not doc["bbox"]:
             print(f"Document {doc['_id']} has no bbox")
             continue
         bbox = doc["bbox"]

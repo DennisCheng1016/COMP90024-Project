@@ -8,3 +8,9 @@ services:
       - "8060:8060"
     volumes:
       - ./src:/front-end/src
+  mastodon_frontend:
+    build:
+      context: ./mastodon_front_end
+      dockerfile: Dockerfile
+    ports:
+      - "8050:8050"

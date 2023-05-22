@@ -2,7 +2,7 @@
 - hosts: 127.0.0.1
   become: yes
   vars:
-    mastodon_base_path: "/home/ubuntu/mastodon"
+    mastodon_base_path: "/home/ubuntu/COMP90024-Project/mastodon"
   tasks:
     - name: Ensure Docker Compose is installed
       pip:
@@ -14,5 +14,3 @@
       docker_compose:
         project_src: "{{ mastodon_base_path }}"
         state: present
----
-

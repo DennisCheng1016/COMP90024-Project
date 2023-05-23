@@ -1,0 +1,38 @@
+---
+- hosts: 127.0.0.1
+  become: yes
+  vars:
+    masternode: 115.146.93.213
+    targetnode: "{{ ansible_default_ipv4.address }}"
+    user: "admin"
+    db_pass: "admin"
+
+  tasks:
+    - name: Gather facts
+      setup:
+
+    - name: Get node _rev
+      uri:
+        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_node/_local/_nodes/couchdb@{{ targetnode }}"
+        method: GET
+        return_content: yes
+      register: rev_result
+
+    - name: Extract _rev from result
+      set_fact:
+        rev: "{{ rev_result.json._rev }}"
+
+    - name: Delete node from cluster
+      uri:
+        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_node/_local/_nodes/couchdb@{{ targetnode }}?rev={{ rev }}"
+        method: DELETE
+      register: delete_result
+
+    - name: Print delete result
+      debug:
+        var: delete_result
+
+    - name: Stop and remove Docker container
+      docker_container:
+        name: "couchdb{{ targetnode }}"
+        state: absent

@@ -110,7 +110,7 @@
 
     - name: Check cluster membership
       uri:
-        url: "http://{{ user }}:{{ db_pass }}@{{ item }}:5984/_membership"
+        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_membership"
         method: GET
         return_content: yes
       register: membership_result

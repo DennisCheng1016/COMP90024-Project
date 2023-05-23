@@ -1,3 +1,0 @@
-cd mastodon
-chmod +x run.sh
-./run.sh

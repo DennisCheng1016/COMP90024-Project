@@ -46,6 +46,7 @@
       docker_container:
         name: "couchdb{{ newnode }}"
         image: "ibmcom/couchdb3:{{ VERSION }}"
+        restart_policy: unless-stopped
         env:
           COUCHDB_USER: "{{ user }}"
           COUCHDB_PASSWORD: "{{ db_pass }}"

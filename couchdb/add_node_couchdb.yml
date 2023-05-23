@@ -2,12 +2,7 @@
 - hosts: 127.0.0.1
   become: yes
   vars:
-    masternode: 115.146.93.213
     newnode: "{{ ansible_default_ipv4.address }}"
-    user: "admin"
-    db_pass: "admin"
-    VERSION: "3.2.1"
-    cookie: "a192aeb9904e6590849337933b000c99"
 
   tasks:
     - name: Gather facts

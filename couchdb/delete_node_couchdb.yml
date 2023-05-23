@@ -2,10 +2,7 @@
 - hosts: 127.0.0.1
   become: yes
   vars:
-    masternode: 115.146.93.213
     targetnode: "{{ ansible_default_ipv4.address }}"
-    user: "admin"
-    db_pass: "admin"
 
   tasks:
     - name: Gather facts

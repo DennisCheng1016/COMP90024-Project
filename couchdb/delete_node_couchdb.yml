@@ -11,22 +11,23 @@
     - name: Gather facts
       setup:
 
-    - name: Get node _rev
-      uri:
-        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_node/_local/_nodes/couchdb@{{ targetnode }}"
-        method: GET
-        return_content: yes
+    - name: Get node _rev using curl
+      shell: >
+        curl -X GET "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_node/_local/_nodes/couchdb@{{ targetnode }}"
       register: rev_result
+      args:
+        warn: no
 
     - name: Extract _rev from result
       set_fact:
-        rev: "{{ rev_result.json._rev }}"
+        rev: "{{ (rev_result.stdout | from_json)._rev }}"
 
-    - name: Delete node from cluster
-      uri:
-        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_node/_local/_nodes/couchdb@{{ targetnode }}?rev={{ rev }}"
-        method: DELETE
+    - name: Delete node from cluster using curl
+      shell: >
+        curl -X DELETE "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_node/_local/_nodes/couchdb@{{ targetnode }}?rev={{ rev }}"
       register: delete_result
+      args:
+        warn: no
 
     - name: Print delete result
       debug:

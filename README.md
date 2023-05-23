@@ -79,7 +79,7 @@ TBD
         2. `sudo docker-compose up`
       - Deploy Mastodon Harvesters
         1. `cd mastodon`
-        2. `sudo docker-compose up`  
+        2. `sudo ansible-playbook -c local setup-harvester.yaml`  
            It will deploy two Mastodon client harvesters listening _Aus.Social_ and _Mastodon Australia_ respectively and perform nlp to process the data, then store into couchDB.  
            We can scale more Mastodon client harvesters by changing the `/path/to/repo/mastodon/setup-harvest.yaml` scale parameters
       - Add/Delete the cluster CouchDB node (make sure add security group for port 5984, 4396, 9100-9200)

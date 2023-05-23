@@ -99,6 +99,7 @@
     #       port: "5984"
     #       username: "{{ user }}"
     #       password: "{{ db_pass }}"
+
     - name: Add new node to cluster using curl
       shell: >
         curl -XPOST "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup" \
@@ -112,12 +113,11 @@
         url: "http://{{ user }}:{{ db_pass }}@{{ item }}:5984/_membership"
         method: GET
         return_content: yes
-      loop: "{{ nodes }}"
       register: membership_result
 
     - name: Print membership results
       debug:
-        msg: "{{ membership_result.results }}"
+        msg: "{{ membership_result }}"
 
     # - name: Enable cluster on master node
     #   uri:

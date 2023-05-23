@@ -86,19 +86,26 @@
           - "username: {{ user }}"
           - "password: {{ db_pass }}"
 
-    - name: Add new node to cluster
-      uri:
-        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
-        method: POST
-        headers:
-          Content-Type: "application/json"
-        body_format: json
-        body:
-          action: "add_node"
-          host: "{{ newnode }}"
-          port: "5984"
-          username: "{{ user }}"
-          password: "{{ db_pass }}"
+    # - name: Add new node to cluster
+    #   uri:
+    #     url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
+    #     method: POST
+    #     headers:
+    #       Content-Type: "application/json"
+    #     body_format: json
+    #     body:
+    #       action: "add_node"
+    #       host: "{{ newnode }}"
+    #       port: "5984"
+    #       username: "{{ user }}"
+    #       password: "{{ db_pass }}"
+    - name: Add new node to cluster using curl
+      shell: >
+        curl -XPOST "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup" \
+        --header "Content-Type: application/json" \
+        --data "{\"action\": \"add_node\", \"host\":\"{{ newnode }}\", \"port\": \"5984\", \"username\": \"{{ user }}\", \"password\":\"{{ db_pass }}\"}"
+      args:
+        warn: no
 
     - name: Check cluster membership
       uri:

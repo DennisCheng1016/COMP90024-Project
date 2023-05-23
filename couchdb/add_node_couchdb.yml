@@ -22,6 +22,10 @@
         name: "ibmcom/couchdb3:{{ VERSION }}"
       register: image_info
 
+    - name: Print image info
+      debug:
+        var: image_info
+
     - name: Pull CouchDB Docker image
       docker_image:
         name: "ibmcom/couchdb3:{{ VERSION }}"
@@ -32,6 +36,10 @@
       docker_container_info:
         name: "couchdb{{ newnode }}"
       register: container_info
+
+    - name: Print container info
+      debug:
+        var: container_info
 
     - name: Remove existing Docker container
       docker_container:
@@ -59,21 +67,14 @@
         port: 5984
         delay: 10
 
-    # - name: Enable cluster on master node
-    #   uri:
-    #     url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
-    #     method: POST
-    #     body_format: json
-    #     body:
-    #       action: "enable_cluster"
-    #       bind_address: "0.0.0.0"
-    #       username: "{{ user }}"
-    #       password: "{{ db_pass }}"
-    #       port: "5984"
-    #       remote_node: "{{ newnode }}"
-    #       node_count: "4"
-    #       remote_current_user: "{{ user }}"
-    #       remote_current_password: "{{ db_pass }}"
+    - name: Print add node details
+      debug:
+        msg:
+          - "url: http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
+          - "action: add_node"
+          - "host: {{ newnode }}"
+          - "username: {{ user }}"
+          - "password: {{ db_pass }}"
 
     - name: Add new node to cluster
       uri:
@@ -98,3 +99,19 @@
     - name: Print membership results
       debug:
         msg: "{{ membership_result.results }}"
+
+    # - name: Enable cluster on master node
+    #   uri:
+    #     url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
+    #     method: POST
+    #     body_format: json
+    #     body:
+    #       action: "enable_cluster"
+    #       bind_address: "0.0.0.0"
+    #       username: "{{ user }}"
+    #       password: "{{ db_pass }}"
+    #       port: "5984"
+    #       remote_node: "{{ newnode }}"
+    #       node_count: "4"
+    #       remote_current_user: "{{ user }}"
+    #       remote_current_password: "{{ db_pass }}"

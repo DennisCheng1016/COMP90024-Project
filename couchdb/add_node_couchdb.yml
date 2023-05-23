@@ -90,6 +90,8 @@
       uri:
         url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
         method: POST
+        headers:
+          Content-Type: "application/json"
         body_format: json
         body:
           action: "add_node"

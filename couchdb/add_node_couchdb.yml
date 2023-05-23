@@ -61,33 +61,18 @@
           - "4369:4369"
           - "9100-9200:9100-9200"
 
-    # - name: Enable cluster on master node
-    #   uri:
-    #     url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
-    #     method: POST
-    #     body_format: json
-    #     body:
-    #       action: "enable_cluster"
-    #       bind_address: "0.0.0.0"
-    #       username: "{{ user }}"
-    #       password: "{{ db_pass }}"
-    #       port: "5984"
-    #       remote_node: "{{ newnode }}"
-    #       node_count: "4"
-    #       remote_current_user: "{{ user }}"
-    #       remote_current_password: "{{ db_pass }}"
-
     - name: Wait for CouchDB to start
       wait_for:
         host: "{{ newnode }}"
         port: 5984
         delay: 10
 
-    - name: Test Connection
-      uri:
-        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/"
-        method: GET
+    - name: Test Connection using curl
+      shell: >
+        curl -X GET "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/"
       register: response
+      args:
+        warn: no
 
     - name: Print connection result
       debug:
@@ -102,20 +87,6 @@
           - "username: {{ user }}"
           - "password: {{ db_pass }}"
 
-    # - name: Add new node to cluster
-    #   uri:
-    #     url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup"
-    #     method: POST
-    #     headers:
-    #       Content-Type: "application/json"
-    #     body_format: json
-    #     body:
-    #       action: "add_node"
-    #       host: "{{ newnode }}"
-    #       port: "5984"
-    #       username: "{{ user }}"
-    #       password: "{{ db_pass }}"
-
     - name: Add new node to cluster using curl
       shell: >
         curl -XPOST "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_cluster_setup" \
@@ -124,12 +95,12 @@
       args:
         warn: no
 
-    - name: Check cluster membership
-      uri:
-        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_membership"
-        method: GET
-        return_content: yes
+    - name: Check cluster membership using curl
+      shell: >
+        curl -X GET "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/_membership"
       register: membership_result
+      args:
+        warn: no
 
     - name: Print membership results
       debug:

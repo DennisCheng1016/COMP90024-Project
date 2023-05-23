@@ -3,21 +3,41 @@
   become: yes
   vars:
     masternode: 115.146.93.213
-    newnode: "{{ ansible_host }}"
+    newnode: "{{ ansible_default_ipv4.address }}"
     user: "admin"
     db_pass: "admin"
     VERSION: "3.2.1"
     cookie: "a192aeb9904e6590849337933b000c99"
+
   tasks:
+    - name: Gather facts
+      setup:
     - name: Install Docker Python SDK
       pip:
         name: docker
         state: present
 
+    - name: Check if Docker image exists
+      docker_image_info:
+        name: "ibmcom/couchdb3:{{ VERSION }}"
+      register: image_info
+
     - name: Pull CouchDB Docker image
       docker_image:
         name: "ibmcom/couchdb3:{{ VERSION }}"
         source: pull
+      when: image_info.images | length == 0
+
+    - name: Check if Docker container exists
+      docker_container_info:
+        name: "couchdb{{ newnode }}"
+      register: container_info
+
+    - name: Remove existing Docker container
+      docker_container:
+        name: "couchdb{{ newnode }}"
+        state: absent
+      when: container_info.exists
 
     - name: Create and run CouchDB Docker container
       docker_container:

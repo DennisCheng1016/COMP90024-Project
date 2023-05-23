@@ -67,6 +67,16 @@
         port: 5984
         delay: 10
 
+    - name: Test Connection
+      uri:
+        url: "http://{{ user }}:{{ db_pass }}@{{ masternode }}:5984/"
+        method: GET
+      register: response
+
+    - name: Print connection result
+      debug:
+        msg: "{{ response }}"
+
     - name: Print add node details
       debug:
         msg:

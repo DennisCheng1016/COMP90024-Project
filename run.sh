@@ -206,5 +206,8 @@ echo 'localhost' | sudo tee /etc/ansible/hosts
 # Run the Ansible Playbook
 sudo ansible-playbook -c local setup-docker.yaml
 
+# Set default shell to zsh
+chsh -s /usr/bin/zsh
+
 # enter zsh
 zsh 

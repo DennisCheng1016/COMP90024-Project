@@ -17,7 +17,7 @@ def save_docs(db, docs, grader):
         if not content or content == "" or len(content) < 1:
             continue
         new_doc = {
-            "_id": doc["id"],  # Assign 'id' of doc to '_id' of CouchDB doc
+            "_id": str(doc["id"]),  # Assign 'id' of doc to '_id' of CouchDB doc
             "name": doc["account"]["display_name"],
             "content": content,
             "time": doc["created_at"],
@@ -32,7 +32,7 @@ def save_docs(db, docs, grader):
         doc_id = doc_list[i]["_id"]
         try:
             # Try to fetch the document
-            db[doc_id]
+            db[str(doc_id)]
             print(f"Document with ID {doc_id} already exists, skipping.")
         except couchdb.http.ResourceNotFound:
             # If document does not exist, save it

@@ -134,7 +134,7 @@ const CustomizedMap = () => {
           gradient={{ from: 'indigo', to: 'cyan' }}
           onClick={() => setCurrentCase('GAMBLING')}
         >
-          GAMBLING
+          GAMBLING & ENTERTAINMENT
         </Button>
         <Button
           radius="lg"
@@ -153,7 +153,7 @@ const CustomizedMap = () => {
           onClick={() => setCurrentCase('FOOD')}
           disabled={currentDatabase === 'INTEGRATION'}
         >
-          FOOD & Obesity
+          FOOD OR OBESITY
         </Button>
       </ButtonContainer2>
       <GoogleMap

@@ -62,7 +62,7 @@ export const getColor = (amount, requestData) => {
       return '#5066ee';
     case 6:
       return '#2b46e7';
-    case 7:
+    default:
       return '#00139f';
   }
 };

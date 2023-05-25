@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { GoogleMap, useLoadScript, Marker } from '@react-google-maps/api';
+import { GoogleMap, useLoadScript } from '@react-google-maps/api';
 import { MapContainer, MapStyles, SpinContainer } from './customizedMapStyle';
 import _ from 'lodash';
 
@@ -153,7 +153,7 @@ const CustomizedMap = () => {
           onClick={() => setCurrentCase('FOOD')}
           disabled={currentDatabase === 'INTEGRATION'}
         >
-          FOOD&Obesity
+          FOOD & Obesity
         </Button>
       </ButtonContainer2>
       <GoogleMap
@@ -165,7 +165,6 @@ const CustomizedMap = () => {
           setMap(map);
 
           drawZones(map);
-          // drawColor(map, requestData);
           map.setCenter({ lat: -37.81, lng: 144.9 });
         }}
         zoom={7}

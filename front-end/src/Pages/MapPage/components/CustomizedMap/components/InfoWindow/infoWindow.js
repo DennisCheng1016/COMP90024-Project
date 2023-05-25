@@ -1,22 +1,15 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 import { InfoBox } from '@react-google-maps/api';
 import {
   CloseButtonContainer,
   Content,
   InfoWindowContainer,
-  NoData,
   Title,
 } from './infoWindowStyle';
 import { CloseButton, LoadingOverlay } from '@mantine/core';
 import { useRequest } from 'ahooks';
 import { getData } from '../../utils';
 import { renderLayer } from './utils';
-
-const transformTime = (date) => {
-  const TIME_FORMATE = { year: '2-digit', month: '2-digit', day: '2-digit' };
-  const createdDate = new Date(date).toLocaleString('en-GB', TIME_FORMATE);
-  return createdDate;
-};
 
 const InfoWindow = ({
   windowCoordinate,
@@ -76,7 +69,7 @@ const InfoWindow = ({
           <LoadingOverlay visible={true} loaderProps={{ size: 'lg', color: 'pink' }} />
         ) : (
           <>
-            <Title>Locality Name</Title>
+              <Title>Locality name</Title>
             <Content>{windowName}</Content>
             {renderLayer(windowName, requestData, currentCase, currentDatabase)}
           </>

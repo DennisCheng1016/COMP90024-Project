@@ -3,7 +3,7 @@
 ## Team Members:
 
 Ho-Yu Cheng 1063950  
-TBD
+Chiawei Yu 1077472  
 
 ## Video links
 
@@ -54,7 +54,7 @@ TBD
 
 ### Natural Language Processing
 
-TBD
+A zero-shot classification model from Huggingface is used - https://huggingface.co/facebook/bart-large-mnli
 
 ### SUDO
 

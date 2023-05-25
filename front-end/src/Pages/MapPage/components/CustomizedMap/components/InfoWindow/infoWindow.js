@@ -69,7 +69,7 @@ const InfoWindow = ({
           <LoadingOverlay visible={true} loaderProps={{ size: 'lg', color: 'pink' }} />
         ) : (
           <>
-              <Title>Locality name</Title>
+              <Title>Locality</Title>
             <Content>{windowName}</Content>
             {renderLayer(windowName, requestData, currentCase, currentDatabase)}
           </>

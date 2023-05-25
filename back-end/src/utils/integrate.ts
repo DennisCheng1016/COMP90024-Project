@@ -1,10 +1,13 @@
-const integrateAnalysis = (sudoAnalysis: IGeneralView[], tweetAnalysis: IGeneralView[]) => {
-    const res: IGeneralView[] = [];
-    sudoAnalysis.map((el) => {
-        const tweetEl = tweetAnalysis.find((tweetEl) => tweetEl.key === el.key);
-        res.push({ key: el.key, value: (tweetEl ? tweetEl.value : 0) / el.value });
+const integrateAnalysis = (sudoAnalysis: IGeneralView[], tweetAnalysis: IGeneralView[]): IGeneralView[] => {
+    const tweetAnalysisMap: { [key: string]: number } = tweetAnalysis.reduce((acc, cur) => {
+        acc[cur.key] = cur.value;
+        return acc;
+    }, {} as { [key: string]: number });
+
+    return sudoAnalysis.map(el => {
+        const tweetElValue = tweetAnalysisMap[el.key] || 0;
+        return { key: el.key, value: tweetElValue / el.value };
     });
-    return res;
 }
 
 export { integrateAnalysis };

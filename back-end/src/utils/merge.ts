@@ -12,23 +12,34 @@ const mergeAnalysis = (analysisVic: IGeneralView[], analysisGmel: IGeneralView[]
 }
 
 const mergeRatio = (ratioVic: ITweetRatio[], ratioGmel: ITweetRatio[], population: IGeneralView[]): IGeneralView[] => {
-    const ratio: ITweetRatio[] = [ ...ratioVic, ...ratioGmel ].reduce((result, item) => {
-        const existingIndex = result.findIndex((el) => el.key === item.key);
-        if (existingIndex !== -1) {
-            result[existingIndex].value.highScores += item.value.highScores;
-            result[existingIndex].value.allScores += item.value.allScores;
-            result[existingIndex].value.ratio = result[existingIndex].value.highScores / result[existingIndex].value.allScores;
+    const ratioMap: { [key: string]: ITweetRatio } = {};
+
+    [ ...ratioVic, ...ratioGmel ].forEach(item => {
+        if (ratioMap[item.key]) {
+            ratioMap[item.key] = {
+                key: item.key,
+                value: {
+                    highScores: ratioMap[item.key].value.highScores + item.value.highScores,
+                    allScores: ratioMap[item.key].value.allScores + item.value.allScores,
+                    ratio: 0 // initial value, will be updated later
+                }
+            };
+            ratioMap[item.key].value.ratio = ratioMap[item.key].value.highScores / ratioMap[item.key].value.allScores;
         } else {
-            result.push(item);
+            ratioMap[item.key] = item;
         }
-        return result;
-    }, [] as ITweetRatio[]);
-    const res: IGeneralView[] = [];
-    ratio.map((el) => {
-        const pop: number = population.find((pop) => pop.key === el.key)?.value || 0;
-        res.push({ key: el.key, value: el.value.ratio * pop });
     });
-    return res;
+
+    const populationMap = population.reduce((acc, cur) => {
+        acc[cur.key] = cur.value;
+        return acc;
+    }, {} as { [key: string]: number });
+
+    return Object.values(ratioMap).map(el => ({
+        key: el.key,
+        value: (populationMap[el.key] || 0) * el.value.ratio
+    }));
 }
+
 
 export { mergeAnalysis, mergeRatio };

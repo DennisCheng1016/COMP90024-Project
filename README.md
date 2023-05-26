@@ -15,10 +15,6 @@ TBD
 
 [TweetMap](http://115.146.94.76:8060/)
 
-### PPT
-
-TBD
-
 ## Project Structure
 
 ### FrontEnd
@@ -73,10 +69,10 @@ A zero-shot classification model from Huggingface is used - https://huggingface.
    5. We can deploy frontend, backend, mastodon harvester or add/delete the node for current cluster couchDB
       - Deploy Frontend -> it will deploy _TweetMap_ with port _8060_ and _MastodonDashboard_ with port _8050_
         1. `cd front-end`
-        2. `sudo docker-compose up`
+        2. `sudo docker-compose up -d`
       - Deploy Backend -> it will deploy backend with port _3000_
         1. `cd back-end`
-        2. `sudo docker-compose up`
+        2. `sudo docker-compose up -d`
       - Deploy Mastodon Harvesters
         1. `cd mastodon`
         2. `sudo ansible-playbook -c local setup-harvester.yaml`  
@@ -103,7 +99,7 @@ Server3: 115.146.93.213
 
     CouchDB/couchdb:3.2.1
 
-Server4: 45.113.232.69
+Server4: 45.113.232.46
 
     Mastodon Harvester
         - aus_nlp_stream

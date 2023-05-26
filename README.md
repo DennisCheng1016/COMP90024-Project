@@ -4,14 +4,21 @@
 
 Ho-Yu Cheng 1063950  
 Chiawei Yu 1077472  
+Ruiming Xie 1050088
+Xiangnan Zhou 1243072
+Zhuocun Tang 1201606
 
 ## Video links
 
 ### Ansible
 
-TBD
+[Ansible Demo](https://youtu.be/u59cwNCa4nA)
 
 ### Frontend
+
+[Use Case Demo](https://youtu.be/I4kUWZsdLdM)
+
+## Application link
 
 [TweetMap](http://115.146.94.76:8060/)
 
